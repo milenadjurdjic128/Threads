@@ -92,11 +92,11 @@ public class Singer extends Thread{
 		
 		while (!stop) {
 			if(this.voice == Voice.LEAD) {
-				line = song.pickLine(this.voice, i % song.getLyrics().size());
+				line = "\t" + song.pickLine(this.voice, i % song.getLyrics().size());
 				synch.singLeadVoice(line, delay);
 			}
 			if(this.voice == Voice.BACKING) {
-				line = song.pickLine(this.voice, i % song.getLyrics().size());
+				line = "\t" + song.pickLine(this.voice, i % song.getLyrics().size());
 				synch.singBackingVoice(line + 1, delay);
 			}
 			i += 2; 

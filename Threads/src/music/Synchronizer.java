@@ -14,6 +14,11 @@ public class Synchronizer {
 	 
 	private boolean leadVoiceFlag;
 	
+	public Synchronizer(boolean leadVoiceFlag) {
+		super();
+		this.leadVoiceFlag = leadVoiceFlag;
+	}
+
 	/**
 	 * 
 	 * @param line sta da otpeva

@@ -8,6 +8,7 @@ import java.util.Timer;
 import music.Performance;
 import music.Singer;
 import music.Song;
+import music.Synchronizer;
 import music.Voice;
 
 public class Test {
@@ -15,10 +16,12 @@ public class Test {
 	public static final Scanner IN = new Scanner(System.in);
 
 	private Song love;
-	List<String> lyrics;
-	Singer bbk;
-	Singer bono;
-	Performance performance;
+	private List<String> lyrics;
+	private Singer bbk;
+	private Singer bono;
+	private Performance performance;
+	private Synchronizer synch;
+	private boolean stop;
 	
 	private void initialize() {
 
@@ -30,9 +33,15 @@ public class Test {
 
 		love = new Song("When love comes to town", lyrics);
 		performance = new Performance(love, 1000);
-
-		bbk = new Singer("B.B.King", Voice.LEAD, performance);
-		bono = new Singer("Bono", Voice.BACKING, performance);
+		
+		synch = new Synchronizer(true); //da bi prvi glas poceo da peva
+		stop = false;
+		
+		bbk = new Singer("B.B.King", Voice.LEAD, performance, synch, stop);
+		bono = new Singer("Bono", Voice.BACKING, performance, synch, stop);
+		
+//		bbk = new Singer("B.B.King", Voice.LEAD, performance);
+//		bono = new Singer("Bono", Voice.BACKING, performance);
 	}
 
 	public void testPickLine() {
@@ -80,5 +89,17 @@ public class Test {
 		bbk.singWithDelay(love, 8);
 		System.out.println();
 		bono.singWithDelay(love, 8);
+	}
+	
+	public void testSingWithThreads () {
+		
+		initialize();
+		bbk.start();
+		bono.start();
+		
+		IN.nextLine();
+		bbk.setStop(true);
+		bono.setStop(true);
+		
 	}
 }

@@ -18,6 +18,7 @@ public class Main {
 		 * "On ima svoj zivot. On je nezavisan covek" vi morate njega da ubijete!
 		 */
 		t.testSingWithTimer();  
+		t.testSingWithThreads();
 	}
 
 }
