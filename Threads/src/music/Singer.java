@@ -1,11 +1,25 @@
 package music;
 
-public class Singer {
+public class Singer extends Thread{
 
 	private String singerName;
 	private Voice voice;
 	private Performance performance;
 	
+	private Synchronizer synch;
+	private boolean stop; //zbog crvene tackice da se ugasi u konzoli
+	
+	
+	public Singer(String singerName, Voice voice, Performance performance,
+			Synchronizer synch, boolean stop) {
+		super();
+		this.singerName = singerName;
+		this.voice = voice;
+		this.performance = performance;
+		this.synch = synch;
+		this.stop = stop;
+	}
+
 	public Singer(String singerName, Voice voice, Performance performance) {
 		super();
 		this.singerName = singerName;
@@ -28,8 +42,10 @@ public class Singer {
 		}
 	}
 	
+	
 	/**
 	 * svako od njih kad peva otpeva jedan stih pa saceka par sekundi pa opet otpeva svoj stih
+	 * za ovo synchronized pogledaj Test klasu
 	 * @param song
 	 * @param numberOfRepetitions
 	 */
@@ -54,7 +70,55 @@ public class Singer {
 			}
 		}
 	}
+	/**
+	 * moram nju da zamenim onim sto zelimo da radi u trenutku kad dodje signal bbk ili bobou da treba da krene da
+	 * radi, mora da postoji ova run metoda i od nje mora da krene
+	 */
+	@Override
+	public void run() {
+		sing(); //sto sad pravim sing zar nisam mogao da pozovem, NO
+		
+	}
+	 
+	/**
+	 * 
+	 */
+	private void sing() {
+		Song song = performance.getSong();
+		long delay = performance.getDelay();
+		
+		int i = 0;
+		String line = null;
+		
+		while (!stop) {
+			if(this.voice == Voice.LEAD) {
+				line = song.pickLine(this.voice, i % song.getLyrics().size());
+				synch.singLeadVoice(line, delay);
+			}
+			if(this.voice == Voice.BACKING) {
+				line = song.pickLine(this.voice, i % song.getLyrics().size());
+				synch.singBackingVoice(line + 1, delay);
+			}
+			i += 2; 
+		}
+	}
 	
+	public Synchronizer getSynch() {
+		return synch;
+	}
+
+	public void setSynch(Synchronizer synch) {
+		this.synch = synch;
+	}
+
+	public boolean isStop() {
+		return stop;
+	}
+
+	public void setStop(boolean stop) {
+		this.stop = stop;
+	}
+
 	public String getSingerName() {
 		return singerName;
 	}
@@ -78,7 +142,5 @@ public class Singer {
 	public void setPerformance(Performance performance) {
 		this.performance = performance;
 	}
-	
-	
 	
 }

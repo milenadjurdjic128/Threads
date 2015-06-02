@@ -3,6 +3,7 @@ package test;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Timer;
 
 import music.Performance;
 import music.Singer;
@@ -63,4 +64,21 @@ public class Test {
 		bono.singWithDelay(love, 8);
 	}
 
+	public void testSingWithTimer() {
+		
+		/**
+		 * Timer iz UTILA!!!
+		 * potrebno je opisati taj tajmer (kad neko uzvikne nesto --> shout)
+		 */
+		Timer timer = new Timer();
+		
+		ShoutTimerTask shout = new ShoutTimerTask(timer); //posle nekoliko sekundi nek ovaj drekne
+		timer.schedule(shout, 2500);
+		
+		
+		initialize();
+		bbk.singWithDelay(love, 8);
+		System.out.println();
+		bono.singWithDelay(love, 8);
+	}
 }
